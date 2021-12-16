@@ -8,6 +8,6 @@ namespace shiki
 {
     internal class Response_list
     {
-        public Response[] responses;
+        public History[] responses;
     }
 }

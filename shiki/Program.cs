@@ -14,7 +14,6 @@ namespace shiki
         public static void Main()
         {
             using var w = new WebClient();
-            var json_data = string.Empty;
             string? userid = Console.ReadLine();
             bool s = true;
             int q = 0; // will not be used
@@ -24,13 +23,14 @@ namespace shiki
             {
                 try
                 {
-                    json_data = w.DownloadString($"https://shikimori.one/api/users/{userid}/history?page={i}&limit=100&target_type=Anime");
-                    List<Response> response = JsonConvert.DeserializeObject<List<Response>>(json_data);
-                   if (json_data == null)
+                    string json_data = w.DownloadString($"https://shikimori.one/api/users/{userid}/history?page={i}&limit=100&target_type=Anime");
+                    List<History> res = JsonConvert.DeserializeObject<List<History>>(json_data);
+                    IEnumerable<History> responce = res.DistinctBy(r => r.Target.Russian);
+                    if (json_data == null)
                    {
                        s = false;
                    }
-                   foreach (Response item in response)
+                   foreach (History item in responce)
                    {
                         string name = item.Target.Russian;
                         string status = item.Description;
@@ -39,7 +39,7 @@ namespace shiki
                         {
                             break;
                         }
-                        if (status == "Просмотрено" || status.Contains("Просмотрено и оценено"))
+                        if (status == "Просмотрено" || status.Contains("Просмотрено и оценено" ))
                         {
                             e++;
                         }
@@ -57,3 +57,13 @@ namespace shiki
         }
     }
 }
+
+
+//foreach (History item in response)
+//{
+//    else if (dublicate)
+//    {
+//        check if it's rewatched => int rewatched_at_past_year++;
+//        continue;
+//    }
+//}

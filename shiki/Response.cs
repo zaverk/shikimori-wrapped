@@ -9,7 +9,7 @@ using Newtonsoft.Json;
 
 namespace shiki
 {
-    internal class Response
+    internal class History
     {
         [JsonProperty("id")]
         public long Id { get; set; }
@@ -23,6 +23,5 @@ namespace shiki
         [JsonProperty("target")]
         public Target Target { get; set; }
 
-    }
-    
+    } 
 }
