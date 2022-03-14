@@ -9,51 +9,66 @@ using Newtonsoft.Json;
 
 namespace shiki
 {
-    public class Program
+    public static class Program
     {
-        public static void Main()
+        public static async Task Main()
         {
-            using var w = new WebClient();
-            string? userid = Console.ReadLine();
-            bool s = true;
-            int q = 0; // will not be used
-            int e = 0;
-            // attempt to download JSON data as a string
-            for (int i = 1; s == true; i++)
+            using var http_client = new HttpClient();
+            string? userid = null;
+            while (string.IsNullOrEmpty(userid))
             {
-                try
-                {
-                    string json_data = w.DownloadString($"https://shikimori.one/api/users/{userid}/history?page={i}&limit=100&target_type=Anime");
-                    List<History> res = JsonConvert.DeserializeObject<List<History>>(json_data);
-                    IEnumerable<History> responce = res.DistinctBy(r => r.Target.Russian);
-                    if (json_data == null)
-                   {
-                       s = false;
-                   }
-                   foreach (History item in responce)
-                   {
-                        string name = item.Target.Russian;
-                        string status = item.Description;
-                        string date = item.CreatedAt?.Date.ToString("d");
-                        if (item.CreatedAt?.Year.ToString() != DateTime.Now.Year.ToString())
-                        {
-                            break;
-                        }
-                        if (status == "Просмотрено" || status.Contains("Просмотрено и оценено" ))
-                        {
-                            e++;
-                        }
-                        q++;
-                           Console.WriteLine($"Name: {name} ||Date: {date} ||Status: {status}");
-                   }
-                }
-                catch (Exception)
-                {
-                    Console.WriteLine("Done");
-                    s = false;
-                }
+                userid = Console.ReadLine();
             }
-            Console.WriteLine($"Всего иттераций: {q} Просмотрено в этом году: {e}");
+
+            bool finished = false;
+            uint page = 1;
+            uint titles_counter = 0;
+            while (!finished)
+            {
+                HttpResponseMessage response = await http_client.GetAsync($"https://shikimori.one/api/users/{userid}/history?page={page}&limit=100&target_type=Anime");
+
+                if (response.StatusCode != HttpStatusCode.OK)
+                {
+                    continue;
+                }
+
+                string json_response = await response.Content.ReadAsStringAsync();
+                List<History>? result = JsonConvert.DeserializeObject<List<History>>(json_response);
+
+                if (result == null || result.Count == 0)
+                {
+                    break;
+                }
+
+                IEnumerable<History> result_enumerator = result.DistinctBy(r => r.Target.Russian);
+                foreach (History item in result_enumerator)
+                {
+                    string name = item.Target.Russian;
+                    string status = item.Description;
+                    string? date = item.CreatedAt?.Date.ToString("d");
+                    if (date == null)
+                    {
+                        finished = true;
+                        break;
+                    }
+
+                    if (item.CreatedAt?.Year.ToString() != DateTime.Now.Year.ToString())
+                    {
+                        break;
+                    }
+
+                    if (status == "Просмотрено" || status.Contains("Просмотрено и оценено"))
+                    {
+                        titles_counter++;
+                    }
+
+                    Console.WriteLine($"Name: {name} ||Date: {date} ||Status: {status}");
+                }
+
+                page++;
+            }
+
+            Console.WriteLine($"Просмотрено в этом году: {titles_counter}");
         }
     }
 }
