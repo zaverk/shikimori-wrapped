@@ -15,9 +15,23 @@ namespace shiki
         {
             using var http_client = new HttpClient();
             string? userid = null;
-            while (string.IsNullOrEmpty(userid))
+            string? var_year = null;
+            int year = 0;
+            while (string.IsNullOrWhiteSpace(userid))
             {
+                Console.Write("enter your username: ");
                 userid = Console.ReadLine();
+            }
+
+            while (string.IsNullOrWhiteSpace(var_year) || !int.TryParse(var_year, out year) || year < 2011)
+            {
+                Console.Write("enter year: ");
+                if (year > 1 && year < 2011)
+                {
+                    Console.WriteLine("input year must be great than 2011!");
+                }
+
+                var_year = Console.ReadLine();
             }
 
             bool finished = false;
@@ -52,7 +66,7 @@ namespace shiki
                         break;
                     }
 
-                    if (item.CreatedAt?.Year.ToString() != DateTime.Now.Year.ToString())
+                    if (item.CreatedAt?.Year != year)
                     {
                         break;
                     }
