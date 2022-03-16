@@ -104,6 +104,11 @@ namespace shiki
                         {
                             kind_counter_Movie++;
                         }
+
+                        if (kind == "clip")
+                        {
+                            kind_counter_Clip++;
+                        }
                     }
 
                     Console.WriteLine($"Name: {name} || Date: {date}");
