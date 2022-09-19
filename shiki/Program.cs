@@ -33,7 +33,7 @@ namespace shiki
             }
 
             Console.Clear();
-            if (fewYears == "1") // brick?
+            if (fewYears == "1")
             {
                 while (string.IsNullOrWhiteSpace(var_year) || !int.TryParse(var_year, out year) || year < 2011)
                 {
@@ -49,8 +49,9 @@ namespace shiki
                 yearList[0] = year;
                 await temp(yearList);
             }
-            else // brick?
+            else
             {
+                //implement list to count Counters (lol) per year
                 int currentYear = DateTime.Now.Year;
                 var tempYear = 2012;
                 while (currentYear > 2011)
@@ -58,6 +59,8 @@ namespace shiki
                     yearList.Add(tempYear++);
                     currentYear--;
                 }
+
+                await temp(yearList);
             }
 
             async Task temp(List<int> yearList)
@@ -73,7 +76,7 @@ namespace shiki
                 uint kind_counter_Clip = 0;
                 while (!finished)
                 {
-                    for (int i = 0; i <= yearList.Count; i++) // brick
+                    for (int i = 0; i < yearList.Count; i++) // brick?
                     {
                         HttpResponseMessage response = await http_client.GetAsync($"https://shikimori.one/api/users/{userid}/history?page={page}&limit=100&target_type=Anime");
                         if (response.StatusCode != HttpStatusCode.OK)
@@ -146,13 +149,13 @@ namespace shiki
                         }
 
                         page++;
+                        // if counter == 0 > dont show
                         Console.WriteLine("--- --- --- --- --- --- --- --- ---");
-                        Console.WriteLine($"Просмотрено в {yearList[i]} году: {titles_counter}");
+                        Console.WriteLine($"Просмотрено в {yearList[i]} году: {titles_counter}"); // yearList[i]
                         Console.WriteLine($"Из них: сериалов: {kind_counter_TV}, фильмов: {kind_counter_Movie}, спешелов:   {kind_counter_Special}, OVA: {kind_counter_OVA}, ONA: {kind_counter_ONA}, клипов: {kind_counter_Clip}");
                     }
-
+                        
                 }
-                    
             }            
         }
         public static async Task Main()
