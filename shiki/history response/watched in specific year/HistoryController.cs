@@ -114,7 +114,7 @@ namespace shiki.history_response.watched_in_specific_year
                 page++;
             }
 
-            Console.WriteLine("--- --- --- --- --- --- --- --- ---");
+            Console.WriteLine("--- --- --- --- --- --- --- --- ---"); // counter should not represent 0's
             Console.WriteLine($"Просмотрено в {year} году: {titles_counter}");
             Console.WriteLine($"Из них: сериалов: {kind_counter_TV}, фильмов: {kind_counter_Movie}, спешелов: {kind_counter_Special}, OVA: {kind_counter_OVA}, ONA: {kind_counter_ONA}, клипов: {kind_counter_Clip}");
             Console.WriteLine("--- --- --- --- --- --- --- --- ---");
