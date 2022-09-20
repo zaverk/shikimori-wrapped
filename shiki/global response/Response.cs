@@ -7,7 +7,7 @@ using System.Net;
 using Newtonsoft.Json.Linq;
 using Newtonsoft.Json;
 
-namespace shiki
+namespace shiki.response
 {
     internal class History
     {
@@ -23,5 +23,5 @@ namespace shiki
         [JsonProperty("target")]
         public Target Target { get; set; }
 
-    } 
+    }
 }
