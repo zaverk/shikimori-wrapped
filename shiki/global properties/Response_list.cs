@@ -2,6 +2,6 @@
 {
     internal class Response_list
     {
-        public History[] responses;
+        public History[] HistoryResponses;
     }
 }
