@@ -50,7 +50,7 @@ namespace shiki.Controllers
             while (!int.TryParse(var_year, out year) || year < 2011) // refactor up to 40 later
             {
                 Console.WriteLine("enter year (keep blank if you want overall result): ");
-                if (year > 1 && year < 2011)
+                if (year > 1 && year <= 2011)
                 {
                     Console.WriteLine("must be greater than 2011!");
                 }
@@ -94,7 +94,7 @@ namespace shiki.Controllers
                             break;
                     }
                 }
-                PrintOverallResult(titles_counter, kind_counter_TV, kind_counter_Special, kind_counter_OVA, kind_counter_ONA, kind_counter_Movie, kind_counter_Clip);
+                PrintResult(titles_counter, kind_counter_TV, kind_counter_Special, kind_counter_OVA, kind_counter_ONA, kind_counter_Movie, kind_counter_Clip);
             }
             #endregion
 
@@ -128,22 +128,22 @@ namespace shiki.Controllers
                 }
                 PrintResult(titles_counter, kind_counter_TV, kind_counter_Special, kind_counter_OVA, kind_counter_ONA, kind_counter_Movie, kind_counter_Clip, year);
             }
+        }
 
-            void PrintOverallResult(uint titles_counter, uint kind_counter_TV, uint kind_counter_Special, uint kind_counter_OVA, uint kind_counter_ONA, uint kind_counter_Movie, uint kind_counter_Clip)
-            {
-                Console.WriteLine("--- --- --- --- --- --- --- --- ---");
-                Console.WriteLine($"За всё время просмотрено: {titles_counter}");
-                Console.WriteLine($"Из них: сериалов: {kind_counter_TV}, фильмов: {kind_counter_Movie}, спешелов: {kind_counter_Special}, OVA: {kind_counter_OVA}, ONA: {kind_counter_ONA}, клипов: {kind_counter_Clip}");
-                Console.WriteLine("--- --- --- --- --- --- --- --- ---");
-            }
+        static void PrintResult(uint titles_counter, uint kind_counter_TV, uint kind_counter_Special, uint kind_counter_OVA, uint kind_counter_ONA, uint kind_counter_Movie, uint kind_counter_Clip)
+        {
+            Console.WriteLine("--- --- --- --- --- --- --- --- ---");
+            Console.WriteLine($"За всё время просмотрено: {titles_counter}");
+            Console.WriteLine($"Из них: сериалов: {kind_counter_TV}, фильмов: {kind_counter_Movie}, спешелов: {kind_counter_Special}, OVA: {kind_counter_OVA}, ONA: {kind_counter_ONA}, клипов: {kind_counter_Clip}");
+            Console.WriteLine("--- --- --- --- --- --- --- --- ---");
+        }
 
-            void PrintResult(uint titles_counter, uint kind_counter_TV, uint kind_counter_Special, uint kind_counter_OVA, uint kind_counter_ONA, uint kind_counter_Movie, uint kind_counter_Clip, int year)
-            {
-                Console.WriteLine("--- --- --- --- --- --- --- --- ---");
-                Console.WriteLine($"Просмотрено в {year} году: {titles_counter}");
-                Console.WriteLine($"Из них: сериалов: {kind_counter_TV}, фильмов: {kind_counter_Movie}, спешелов: {kind_counter_Special}, OVA: {kind_counter_OVA}, ONA: {kind_counter_ONA}, клипов: {kind_counter_Clip}");
-                Console.WriteLine("--- --- --- --- --- --- --- --- ---");
-            }
+        static void PrintResult(uint titles_counter, uint kind_counter_TV, uint kind_counter_Special, uint kind_counter_OVA, uint kind_counter_ONA, uint kind_counter_Movie, uint kind_counter_Clip, int year)
+        {
+            Console.WriteLine("--- --- --- --- --- --- --- --- ---");
+            Console.WriteLine($"Просмотрено в {year} году: {titles_counter}");
+            Console.WriteLine($"Из них: сериалов: {kind_counter_TV}, фильмов: {kind_counter_Movie}, спешелов: {kind_counter_Special}, OVA: {kind_counter_OVA}, ONA: {kind_counter_ONA}, клипов: {kind_counter_Clip}");
+            Console.WriteLine("--- --- --- --- --- --- --- --- ---");
         }
     }
 }
