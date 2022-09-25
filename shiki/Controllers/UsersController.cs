@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Text;
 using Newtonsoft.Json;
 using shiki.global_properties;
 
@@ -132,18 +133,53 @@ namespace shiki.Controllers
 
         static void PrintResult(uint titles_counter, uint kind_counter_TV, uint kind_counter_Special, uint kind_counter_OVA, uint kind_counter_ONA, uint kind_counter_Movie, uint kind_counter_Clip)
         {
+            if (titles_counter == 0)
+            {
+                return;
+            }
+
             Console.WriteLine("--- --- --- --- --- --- --- --- ---");
             Console.WriteLine($"За всё время просмотрено: {titles_counter}");
-            Console.WriteLine($"Из них: сериалов: {kind_counter_TV}, фильмов: {kind_counter_Movie}, спешелов: {kind_counter_Special}, OVA: {kind_counter_OVA}, ONA: {kind_counter_ONA}, клипов: {kind_counter_Clip}");
+
+            StringBuilder sb = new StringBuilder("Из них: ");
+            bool first_statement = true;
+            var appender = (string to_append, uint value) => { 
+                if (value != 0)
+                {
+                    if (first_statement)
+                    {
+                        first_statement = false;
+                    }
+                    else
+                    {
+                        sb.Append(", ");
+                    }
+                    sb.Append(to_append);
+                    sb.Append(": ");
+                    sb.Append(value);
+                }
+            };
+
+            appender("сериалов", kind_counter_TV);
+            appender("фильмов", kind_counter_Movie);
+            appender("спешелов", kind_counter_Special);
+            appender("OVA", kind_counter_OVA);
+            appender("ONA", kind_counter_ONA);
+            appender("клипов", kind_counter_Clip);
+
+            Console.WriteLine(sb);
             Console.WriteLine("--- --- --- --- --- --- --- --- ---");
         }
 
         static void PrintResult(uint titles_counter, uint kind_counter_TV, uint kind_counter_Special, uint kind_counter_OVA, uint kind_counter_ONA, uint kind_counter_Movie, uint kind_counter_Clip, int year)
         {
-            Console.WriteLine("--- --- --- --- --- --- --- --- ---");
+            if (titles_counter == 0)
+            {
+                return;
+            }
+
             Console.WriteLine($"Просмотрено в {year} году: {titles_counter}");
-            Console.WriteLine($"Из них: сериалов: {kind_counter_TV}, фильмов: {kind_counter_Movie}, спешелов: {kind_counter_Special}, OVA: {kind_counter_OVA}, ONA: {kind_counter_ONA}, клипов: {kind_counter_Clip}");
-            Console.WriteLine("--- --- --- --- --- --- --- --- ---");
+            PrintResult(titles_counter, kind_counter_TV, kind_counter_Special, kind_counter_OVA, kind_counter_ONA, kind_counter_Movie, kind_counter_Clip);
         }
     }
 }
