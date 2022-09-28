@@ -14,14 +14,10 @@ namespace shiki.Controllers
             #region initial and choice for specific year or not
             var http_client = new HttpClient();
             string? userid = "zaverk";
-            while (string.IsNullOrWhiteSpace(userid))
-            {
-                Console.Write("enter your username: ");
-                userid = Console.ReadLine();
-            }
+            
             string? var_year = null;
             int year = 0;
-            while (!int.TryParse(var_year, out year) || year < 2011)
+            while (!int.TryParse(var_year, out year) || year < 2011) // refactor up to 40 later
             {
                 Console.WriteLine("enter year (keep blank if you want overall result): ");
                 if (year > 1 && year < 2011)
@@ -36,10 +32,12 @@ namespace shiki.Controllers
                     await Overall(http_client, userid);
                     break;
                 }
-                // logic of how many times InSpecificYear will be called here
             }
-
-            await InSpecificYear(http_client, userid, year);
+            
+            if (!string.IsNullOrWhiteSpace(var_year))
+            {
+                await InSpecificYear(http_client, userid, year);
+            }
             #endregion
             // i should exclude Overall? then i need to transfer GET from InSpecificYear
             static async Task InSpecificYear(HttpClient http_client, string? userid, int year)
@@ -68,7 +66,7 @@ namespace shiki.Controllers
                         break;
                     }
 
-                    IEnumerable<History> result_enumerator = result.DistinctBy(r => r.Target.Russian);
+                    IEnumerable<History> result_enumerator = result.Where(r => r.CreatedAt?.Year == year).DistinctBy(r => r.Target.Russian);
                     foreach (History item in result_enumerator)
                     {
                         string name = item.Target.Russian;
@@ -81,45 +79,32 @@ namespace shiki.Controllers
                             break;
                         }
 
-                        if (item.CreatedAt?.Year != year)
-                        {
-                            break;
-                        }
-
                         if (status == "Просмотрено" || status.Contains("Просмотрено и оценено"))
                         {
                             titles_counter++;
-                            if (kind == "tv")
+                            switch (kind)
                             {
-                                kind_counter_TV++;
+                                case "tv":
+                                    kind_counter_TV++;
+                                    break;
+                                case "special":
+                                    kind_counter_Special++;
+                                    break;
+                                case "ova":
+                                    kind_counter_OVA++;
+                                    break;
+                                case "ona":
+                                    kind_counter_ONA++;
+                                    break;
+                                case "movie":
+                                    kind_counter_Movie++;
+                                    break;
+                                case "clip":
+                                    kind_counter_Clip++;
+                                    break;
                             }
 
-                            if (kind == "special")
-                            {
-                                kind_counter_Special++;
-                            }
-
-                            if (kind == "ova")
-                            {
-                                kind_counter_OVA++;
-                            }
-
-                            if (kind == "ona")
-                            {
-                                kind_counter_ONA++;
-                            }
-
-                            if (kind == "movie")
-                            {
-                                kind_counter_Movie++;
-                            }
-
-                            if (kind == "clip")
-                            {
-                                kind_counter_Clip++;
-                            }
-
-                            //Console.WriteLine($"Name: {name} || Date: {date}");
+                            Console.WriteLine($"Name: {name} || Date: {date} || Status: {status}");
                         }
                     }
 
@@ -158,7 +143,7 @@ namespace shiki.Controllers
                         break;
                     }
 
-                    IEnumerable<History> result_enumerator = result.DistinctBy(r => r.Target.Russian);
+                    IEnumerable<History> result_enumerator = result; //.DistinctBy(r => r.Target.Russian);
                     foreach (History item in result_enumerator)
                     {
                         string name = item.Target.Russian;
@@ -170,41 +155,33 @@ namespace shiki.Controllers
                             finished = true;
                             break;
                         }
-
+                        
                         if (status == "Просмотрено" || status.Contains("Просмотрено и оценено"))
                         {
                             titles_counter++;
-                            if (kind == "tv")
+                            switch (kind)
                             {
-                                kind_counter_TV++;
+                                case "tv":
+                                    kind_counter_TV++;
+                                    break;
+                                case "special":
+                                    kind_counter_Special++;
+                                    break;
+                                case "ova":
+                                    kind_counter_OVA++;
+                                    break;
+                                case "ona":
+                                    kind_counter_ONA++;
+                                    break;
+                                case "movie":
+                                    kind_counter_Movie++;
+                                    break;
+                                case "clip":
+                                    kind_counter_Clip++;
+                                    break;
                             }
 
-                            if (kind == "special")
-                            {
-                                kind_counter_Special++;
-                            }
-
-                            if (kind == "ova")
-                            {
-                                kind_counter_OVA++;
-                            }
-
-                            if (kind == "ona")
-                            {
-                                kind_counter_ONA++;
-                            }
-
-                            if (kind == "movie")
-                            {
-                                kind_counter_Movie++;
-                            }
-
-                            if (kind == "clip")
-                            {
-                                kind_counter_Clip++;
-                            }
-
-                            //Console.WriteLine($"Name: {name} || Date: {date}");
+                            Console.WriteLine($"Name: {name} || Date: {date}");
                         }
                     }
 

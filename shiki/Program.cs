@@ -6,7 +6,8 @@ namespace shiki
     {
         public static async Task Main()
         {
-            await HistoryController.Watched();
+            await UsersController.GetAnimeRates();
+            //await HistoryController.Watched();
         }
     }
 }
