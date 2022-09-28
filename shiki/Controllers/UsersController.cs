@@ -47,7 +47,6 @@ namespace shiki.Controllers
             string json_response = await response.Content.ReadAsStringAsync();
             List<User_anime_rates>? result = JsonConvert.DeserializeObject<List<User_anime_rates>>(json_response);
             IEnumerable<User_anime_rates>? result_enumerator = result;
-            #region InSpecificYear?
             while (!int.TryParse(var_year, out year) || year < 2011) // refactor up to 40 later
             {
                 Console.WriteLine("enter year (keep blank if you want overall result): ");
@@ -97,7 +96,6 @@ namespace shiki.Controllers
                 }
                 PrintResult(titles_counter, kind_counter_TV, kind_counter_Special, kind_counter_OVA, kind_counter_ONA, kind_counter_Movie, kind_counter_Clip);
             }
-            #endregion
 
             void InSpecificYear(string? userid, int year, List<User_anime_rates> result)
             {
@@ -178,8 +176,37 @@ namespace shiki.Controllers
                 return;
             }
 
+            Console.WriteLine("--- --- --- --- --- --- --- --- ---");
             Console.WriteLine($"Просмотрено в {year} году: {titles_counter}");
-            PrintResult(titles_counter, kind_counter_TV, kind_counter_Special, kind_counter_OVA, kind_counter_ONA, kind_counter_Movie, kind_counter_Clip);
+
+            StringBuilder sb = new StringBuilder("Из них: ");
+            bool first_statement = true;
+            var appender = (string to_append, uint value) => {
+                if (value != 0)
+                {
+                    if (first_statement)
+                    {
+                        first_statement = false;
+                    }
+                    else
+                    {
+                        sb.Append(", ");
+                    }
+                    sb.Append(to_append);
+                    sb.Append(": ");
+                    sb.Append(value);
+                }
+            };
+
+            appender("сериалов", kind_counter_TV);
+            appender("фильмов", kind_counter_Movie);
+            appender("спешелов", kind_counter_Special);
+            appender("OVA", kind_counter_OVA);
+            appender("ONA", kind_counter_ONA);
+            appender("клипов", kind_counter_Clip);
+
+            Console.WriteLine(sb);
+            Console.WriteLine("--- --- --- --- --- --- --- --- ---");
         }
     }
 }
