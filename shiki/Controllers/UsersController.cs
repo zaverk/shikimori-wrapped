@@ -29,7 +29,6 @@ namespace shiki.Controllers
 
         public static async Task GetAnimeRates()
         {
-            HttpClient https_client = new HttpClient();
             string? var_year = null;
             int year = 0;
             string user_id = "zaverk";
@@ -42,12 +41,13 @@ namespace shiki.Controllers
             uint kind_counter_Movie = 0;
             uint kind_counter_Clip = 0;
 
+            HttpClient https_client = new HttpClient();
             HttpResponseMessage response = await https_client.GetAsync($"https://shikimori.one/api/users/{user_id}/anime_rates?limit=5000&status=completed&page={page}");
             // check, if next pages is null or not
             string json_response = await response.Content.ReadAsStringAsync();
             List<User_anime_rates>? result = JsonConvert.DeserializeObject<List<User_anime_rates>>(json_response);
-            IEnumerable<User_anime_rates>? result_enumerator = result;
-            while (!int.TryParse(var_year, out year) || year < 2011) // refactor up to 40 later
+
+            while (!int.TryParse(var_year, out year) || year < 2011) // refactor later
             {
                 Console.WriteLine("enter year (keep blank if you want overall result): ");
                 if (year > 1 && year <= 2011)
@@ -62,14 +62,13 @@ namespace shiki.Controllers
                     break;
                 }
             }
-
             if (!string.IsNullOrWhiteSpace(var_year))
             {
                 InSpecificYear(user_id, year, result);
             }
             else
             {
-                foreach (var item in result_enumerator)
+                foreach (var item in result)
                 {
                     titles_counter++;
                     switch (item.Anime.Kind)
