@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using Newtonsoft.Json;
-using shiki.global_properties;
+using shiki.Global_properties;
 
 namespace shiki.Controllers
 {

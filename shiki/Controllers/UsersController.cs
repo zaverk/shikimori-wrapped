@@ -5,7 +5,7 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using Newtonsoft.Json;
-using shiki.global_properties;
+using shiki.Global_properties;
 
 namespace shiki.Controllers
 {
