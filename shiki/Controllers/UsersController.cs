@@ -5,29 +5,14 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using Newtonsoft.Json;
-using shiki.Global_properties.Classes;
-using shiki.Global_properties.old;
+using ShikimoriSharp;
+using shiki;
+using ShikimoriSharp.Classes;
 
 namespace shiki.Controllers
 {
     internal class UsersController
     {
-        //public static async Task GetUserId()
-        //{
-        //    HttpClient http_client = new HttpClient();
-        //    var username = "zaverk";
-        //    while (string.IsNullOrWhiteSpace(username))
-        //    {
-        //        Console.Write("enter your username: ");
-        //        username = Console.ReadLine();
-        //    }
-
-        //    HttpResponseMessage response = await http_client.GetAsync($"https://shikimori.one/api/users/{username}?is_nickname=1");
-        //    string json_response = await response.Content.ReadAsStringAsync();
-        //    UserId? result = JsonConvert.DeserializeObject<UserId>(json_response);
-        //    user_id = result.Id;
-        //}
-
         public static async Task GetAnimeRates()
         {
             string? var_year = null;
@@ -42,13 +27,16 @@ namespace shiki.Controllers
             uint kind_counter_Movie = 0;
             uint kind_counter_Clip = 0;
 
-            HttpClient https_client = new HttpClient();
-            HttpResponseMessage response = await https_client.GetAsync($"https://shikimori.one/api/users/{user_id}/anime_rates?limit=5000&status=completed&page={page}");
-            // check, if next pages is null or not
-            string json_response = await response.Content.ReadAsStringAsync();
-            List<User_anime_rates>? result = JsonConvert.DeserializeObject<List<User_anime_rates>>(json_response);
-            // for few pages, later
-            //IEnumerable<User_anime_rates> result_enumerator = result.Where(r => r.CreatedAt.Year == year).DistinctBy(r => r.Target.Russian);
+            //HttpClient https_client = new HttpClient();
+            //HttpResponseMessage response = await https_client.GetAsync($"https://shikimori.one/api/users/{user_id}/anime_rates?limit=5000&status=completed&page={page}");
+            ////check, if next pages is null or not
+            //string json_response = await response.Content.ReadAsStringAsync();
+            //List<User_anime_rates>? result = JsonConvert.DeserializeObject<List<User_anime_rates>>(json_response);
+            ////for few pages, later
+
+            List<AnimeRate> ListAnimeRates = await DI.MyGetUserAnimeRates(user_id);
+
+            IEnumerable<AnimeRate> result_enumerator = ListAnimeRates.Where(r => r.CreatedAt?.Year == year).DistinctBy(r => r.Anime.Russian);
 
             while (!int.TryParse(var_year, out year) || year < 2011) // refactor later
             {
@@ -67,11 +55,11 @@ namespace shiki.Controllers
             }
             if (!string.IsNullOrWhiteSpace(var_year))
             {
-                InSpecificYear(user_id, year, result);
+                InSpecificYear(user_id, year, ListAnimeRates);
             }
             else
             {
-                foreach (var item in result)
+                foreach (var item in ListAnimeRates)
                 {
                     titles_counter++;
                     switch (item.Anime.Kind)
@@ -99,9 +87,9 @@ namespace shiki.Controllers
                 PrintResult(titles_counter, kind_counter_TV, kind_counter_Special, kind_counter_OVA, kind_counter_ONA, kind_counter_Movie, kind_counter_Clip);
             }
 
-            void InSpecificYear(string? userid, int year, List<User_anime_rates> result)
+            void InSpecificYear(string? userid, int year, List<AnimeRate> ListAnimeRates)
             {
-                IEnumerable<User_anime_rates> result_InSpecificYear = result.Where(r => r.created_at.Year == year);
+                IEnumerable<AnimeRate> result_InSpecificYear = ListAnimeRates.Where(r => r.CreatedAt?.Year == year);
                 foreach (var item in result_InSpecificYear)
                 {
                     titles_counter++;
@@ -143,7 +131,8 @@ namespace shiki.Controllers
 
             StringBuilder sb = new StringBuilder("Из них: ");
             bool first_statement = true;
-            var appender = (string to_append, uint value) => { 
+            var appender = (string to_append, uint value) =>
+            {
                 if (value != 0)
                 {
                     if (first_statement)
@@ -183,7 +172,8 @@ namespace shiki.Controllers
 
             StringBuilder sb = new StringBuilder("Из них: ");
             bool first_statement = true;
-            var appender = (string to_append, uint value) => {
+            var appender = (string to_append, uint value) =>
+            {
                 if (value != 0)
                 {
                     if (first_statement)

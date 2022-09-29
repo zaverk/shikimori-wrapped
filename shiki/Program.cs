@@ -1,4 +1,8 @@
-﻿using shiki.Controllers;
+﻿using Microsoft.Extensions.Logging;
+using ShikimoriSharp;
+using ShikimoriSharp.Bases;
+using shiki.Models;
+using shiki.Controllers;
 
 namespace shiki
 {
