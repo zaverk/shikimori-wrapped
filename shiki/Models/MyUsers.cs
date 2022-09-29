@@ -22,7 +22,7 @@ namespace shiki.Models
             return await AllRates("anime", id, settings, personalInformation);
         }
         
-        private async Task<AnimeRate[]> AllRates(string thingy, long id, AnimeRateRequestSettings settings, AccessToken p)
+        private async Task<AnimeRate[]> AllRates(string thingy, long id, AnimeRateRequestWithStatusSettings settings, AccessToken p)
         {
             return await Request<AnimeRate[], AnimeRateRequestSettings>($"users/{id}/{thingy}_rates", settings, p);
         }

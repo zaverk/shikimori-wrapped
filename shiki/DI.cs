@@ -39,7 +39,8 @@ namespace shiki
             var MyClient = MyShikimoriClient();
             long userId = (await MyClient.Users.GetUser($"{Username}")).Id;
             var pages = 1;
-            AnimeRate[] temp = await MyClient.MyUsers.GetUserAnimeRates(userId, new AnimeRateRequestSettings { limit=5000, page=1 } );
+            string c = "completed";
+            AnimeRate[] temp = await MyClient.MyUsers.GetUserAnimeRates(userId, new AnimeRateRequestWithStatusSettings { limit=5000, page=1, status=c } );
             ListAnimeRates.AddRange(temp);
             //while (temp != null)
             //{

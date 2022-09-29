@@ -10,6 +10,6 @@ namespace shiki.Models
 {
     public class AnimeRateRequestWithStatusSettings : AnimeRateRequestSettings
     {
-        public string status { get; set; }
+        public string? status { get; set; }
     }
 }
