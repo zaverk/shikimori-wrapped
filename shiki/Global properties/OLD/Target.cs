@@ -2,7 +2,7 @@
 using Newtonsoft.Json;
 using shiki.Global_properties.Bases;
 
-namespace shiki.Global_properties
+namespace shiki.Global_properties.old
 {
     internal class Target
     {

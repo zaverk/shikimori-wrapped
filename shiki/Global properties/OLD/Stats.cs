@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 
-namespace shiki.Global_properties
+namespace shiki.Global_properties.old
 {
     internal class Stats
     {

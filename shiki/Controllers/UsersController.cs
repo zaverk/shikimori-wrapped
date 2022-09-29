@@ -5,7 +5,8 @@ using System.Net;
 using System.Net.Http;
 using System.Text;
 using Newtonsoft.Json;
-using shiki.Global_properties;
+using shiki.Global_properties.Classes;
+using shiki.Global_properties.old;
 
 namespace shiki.Controllers
 {
@@ -46,6 +47,8 @@ namespace shiki.Controllers
             // check, if next pages is null or not
             string json_response = await response.Content.ReadAsStringAsync();
             List<User_anime_rates>? result = JsonConvert.DeserializeObject<List<User_anime_rates>>(json_response);
+            // for few pages, later
+            //IEnumerable<User_anime_rates> result_enumerator = result.Where(r => r.CreatedAt.Year == year).DistinctBy(r => r.Target.Russian);
 
             while (!int.TryParse(var_year, out year) || year < 2011) // refactor later
             {

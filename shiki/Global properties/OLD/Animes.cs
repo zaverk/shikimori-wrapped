@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 using shiki.Global_properties.Bases;
 using shiki.Global_properties.Classes;
 
-namespace shiki.Global_properties
+namespace shiki.Global_properties.old
 {
     internal class Animes
     {
