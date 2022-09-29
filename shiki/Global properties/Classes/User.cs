@@ -1,6 +1,6 @@
 ﻿using System;
 using Newtonsoft.Json;
-using ShikimoriSharp.AdditionalRequests;
+using shiki.Global_properties.AdditionalRequests;
 using shiki.Global_properties.Bases;
 
 namespace shiki.Global_properties.Classes

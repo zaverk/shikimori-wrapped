@@ -1,4 +1,6 @@
-﻿namespace shiki.Global_properties
+﻿using shiki.Global_properties.Classes;
+
+namespace shiki.Global_properties
 {
     internal class Response_list
     {

@@ -1,10 +1,10 @@
 ﻿using System.Threading.Tasks;
-using ShikimoriSharp.AdditionalRequests;
+using shiki.Global_properties.AdditionalRequests;
 using shiki.Global_properties.Bases;
 using shiki.Global_properties.Classes;
-using ShikimoriSharp.Settings;
+using shiki.Global_properties.Settings;
 
-namespace ShikimoriSharp.Information
+namespace shiki.Global_properties.Information
 {
     public class Mangas : MangaRanobeApiBase
     {

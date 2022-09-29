@@ -1,8 +1,10 @@
 ﻿using System.Threading.Tasks;
-using ShikimoriSharp.AdditionalRequests;
+using shiki.Global_properties;
+using shiki.Global_properties.AdditionalRequests;
 using shiki.Global_properties.Bases;
+using Version = shiki.Global_properties.Bases.Version;
 
-namespace ShikimoriSharp.Information
+namespace shiki.Global_properties.Information
 {
     public class Forums : ApiBase
     {

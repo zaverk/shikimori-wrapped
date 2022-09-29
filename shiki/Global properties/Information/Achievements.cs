@@ -2,8 +2,8 @@
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using shiki.Global_properties.Bases;
-using ShikimoriSharp.Settings;
-using Version = shiki.Global_properties.Bases;
+using shiki.Global_properties.Settings;
+using Version = shiki.Global_properties.Bases.Version;
 
 namespace shiki.Global_properties.Information
 {

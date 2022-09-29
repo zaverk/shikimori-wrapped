@@ -1,7 +1,9 @@
 ﻿using System.Threading.Tasks;
 using shiki.Global_properties.Bases;
+using Version = shiki.Global_properties.Bases.Version;
 
-namespace ShikimoriSharp.Information
+
+namespace shiki.Global_properties.Information
 {
     public class Stats : ApiBase
     {

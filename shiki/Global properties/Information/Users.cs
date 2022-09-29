@@ -1,9 +1,11 @@
 ﻿using System.Threading.Tasks;
+using shiki.Global_properties;
 using shiki.Global_properties.Bases;
 using shiki.Global_properties.Classes;
-using ShikimoriSharp.Settings;
+using shiki.Global_properties.Settings;
+using Version = shiki.Global_properties.Bases.Version;
 
-namespace ShikimoriSharp.Information
+namespace shiki.Global_properties.Information
 {
     public class Users : ApiBase
     {

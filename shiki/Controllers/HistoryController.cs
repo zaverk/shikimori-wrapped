@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using Newtonsoft.Json;
-using shiki.Global_properties;
+using shiki.Global_properties.Classes;
 
 namespace shiki.Controllers
 {
@@ -66,12 +66,12 @@ namespace shiki.Controllers
                         break;
                     }
 
-                    IEnumerable<History> result_enumerator = result.Where(r => r.CreatedAt?.Year == year).DistinctBy(r => r.Target.Russian);
+                    IEnumerable<History> result_enumerator = result.Where(r => r.CreatedAt.Year == year).DistinctBy(r => r.Target.Russian);
                     foreach (History item in result_enumerator)
                     {
                         string name = item.Target.Russian;
                         string status = item.Description;
-                        string? date = item.CreatedAt?.Date.ToString("d");
+                        string? date = item.CreatedAt.Date.ToString("d");
                         string kind = item.Target.Kind;
                         if (date == null)
                         {
@@ -148,7 +148,7 @@ namespace shiki.Controllers
                     {
                         string name = item.Target.Russian;
                         string status = item.Description;
-                        string? date = item.CreatedAt?.Date.ToString("d");
+                        string? date = item.CreatedAt.Date.ToString("d");
                         string kind = item.Target.Kind;
                         if (date == null)
                         {
