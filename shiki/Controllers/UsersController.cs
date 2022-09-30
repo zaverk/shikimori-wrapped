@@ -16,9 +16,9 @@ namespace shiki.Controllers
         public static async Task GetAnimeRates()
         {
             string? var_year = null;
-            int year = 0;
-            string user_id = "zaverk";
-            var page = 1;
+            var year = 0;
+            var user_id = "zaverk";
+            //var page = 1;
             uint titles_counter = 0;
             uint kind_counter_TV = 0;
             uint kind_counter_Special = 0;

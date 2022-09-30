@@ -39,15 +39,14 @@ namespace shiki
             var MyClient = MyShikimoriClient();
             long userId = (await MyClient.Users.GetUser($"{Username}")).Id;
             var pages = 1;
-            string c = "completed";
-            AnimeRate[] temp = await MyClient.MyUsers.GetUserAnimeRates(userId, new AnimeRateRequestWithStatusSettings { limit=5000, page=1, status=c } );
+            AnimeRate[] temp = await MyClient.MyUsers.GetUserAnimeRates(userId, new AnimeRateRequestWithStatusSettings { limit=5000, page=1, status="completed" } );
             ListAnimeRates.AddRange(temp);
-            //while (temp != null)
-            //{
-            //    pages++;
-            //    temp = await MyClient.MyUsers.GetUserAnimeRates(userId);
-            //    ListAnimeRates.AddRange(temp);
-            //}
+            while (temp != null)
+            {
+                pages++;
+                temp = await MyClient.MyUsers.GetUserAnimeRates(userId);
+                ListAnimeRates.AddRange(temp);
+            }
 
             return ListAnimeRates;
         }
