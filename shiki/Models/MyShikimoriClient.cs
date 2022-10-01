@@ -13,12 +13,13 @@ namespace shiki.Models
     public class MyShikimoriClient : ShikimoriClient
     {
         public MyAnimes MyAnimes { get; }
-        public MyUsers MyUsers { get; set; }
+        public MyUsers MyUsers { get; }
 
         public MyShikimoriClient(ILogger logger, ClientSettings settings) : base(logger, settings)
         {
             MyAnimes = new MyAnimes(Client);
             MyUsers = new MyUsers(Client);
+            
         }
     }
 }

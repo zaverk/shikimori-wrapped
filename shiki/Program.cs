@@ -3,6 +3,7 @@ using ShikimoriSharp;
 using ShikimoriSharp.Bases;
 using shiki.Models;
 using shiki.Controllers;
+using shiki.Db;
 
 namespace shiki
 {
@@ -10,7 +11,8 @@ namespace shiki
     {
         public static async Task Main()
         {
-            await UsersController.GetAnimeRates();
+            await MyMongoDb.GetAnimeById();
+            //await UsersController.GetAnimeRates();
             //await HistoryController.Watched();
         }
     }

@@ -23,8 +23,8 @@ namespace shiki
         
         public static async Task MyMongoDb()
         {
-            var mongoDb = new MongoDb();
-            await MongoDb.ResponseToBson();
+            var mongoDb = new MyMongoDb();
+            await Db.MyMongoDb.GetAnimes();
         }
 
         public static async Task<MyAnimeID> MyGetAnimeById(long animeId)
@@ -52,6 +52,14 @@ namespace shiki
             }
 
             return listAnimeRates;
+        }
+        public static async Task GetAnimes()
+        {
+            var listAnimes = new List<Anime>();
+            var myClient = Di.MyShikimoriClient();
+            var pages = 1;
+            var temp = await myClient.Animes.GetAnime(new AnimeRequestSettings { limit = 50, page = pages});
+            listAnimes.AddRange(temp);
         }
     }
 }
