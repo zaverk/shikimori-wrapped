@@ -15,17 +15,17 @@ namespace shiki.Controllers
     {
         public static async Task GetAnimeRates()
         {
-            string? var_year = null;
+            string? varYear = null;
             var year = 0;
-            var user_id = "zaverk";
+            var userId = "zaverk"; //TODO Console.ReadLine userId
             //var page = 1;
-            uint titles_counter = 0;
-            uint kind_counter_TV = 0;
-            uint kind_counter_Special = 0;
-            uint kind_counter_OVA = 0;
-            uint kind_counter_ONA = 0;
-            uint kind_counter_Movie = 0;
-            uint kind_counter_Clip = 0;
+            uint titlesCounter = 0;
+            uint kindCounterTv = 0;
+            uint kindCounterSpecial = 0;
+            uint kindCounterOva = 0;
+            uint kindCounterOna = 0;
+            uint kindCounterMovie = 0;
+            uint kindCounterClip = 0;
 
             //HttpClient https_client = new HttpClient();
             //HttpResponseMessage response = await https_client.GetAsync($"https://shikimori.one/api/users/{user_id}/anime_rates?limit=5000&status=completed&page={page}");
@@ -34,11 +34,11 @@ namespace shiki.Controllers
             //List<User_anime_rates>? result = JsonConvert.DeserializeObject<List<User_anime_rates>>(json_response);
             ////for few pages, later
 
-            List<AnimeRate> ListAnimeRates = await DI.MyGetUserAnimeRates(user_id);
+            var listAnimeRates = await Di.GetUserCompletedAnimeRates(userId);
 
-            IEnumerable<AnimeRate> result_enumerator = ListAnimeRates.Where(r => r.CreatedAt?.Year == year).DistinctBy(r => r.Anime.Russian);
+            var resultEnumerator = listAnimeRates.Where(r => r.CreatedAt?.Year == year).DistinctBy(r => r.Anime.Russian);
 
-            while (!int.TryParse(var_year, out year) || year < 2011) // refactor later
+            while (!int.TryParse(varYear, out year) || year < 2011) // refactor later
             {
                 Console.WriteLine("enter year (keep blank if you want overall result): ");
                 if (year > 1 && year <= 2011)
@@ -46,156 +46,158 @@ namespace shiki.Controllers
                     Console.WriteLine("must be greater than 2011!");
                 }
 
-                var_year = Console.ReadLine();
+                varYear = Console.ReadLine();
                 Console.Clear();
-                if (string.IsNullOrWhiteSpace(var_year))
+                if (string.IsNullOrWhiteSpace(varYear))
                 {
                     break;
                 }
             }
-            if (!string.IsNullOrWhiteSpace(var_year))
+            if (!string.IsNullOrWhiteSpace(varYear))
             {
-                InSpecificYear(user_id, year, ListAnimeRates);
+                InSpecificYear(userId, year, listAnimeRates);
             }
             else
             {
-                foreach (var item in ListAnimeRates)
+                foreach (var item in listAnimeRates)
                 {
-                    titles_counter++;
+                    titlesCounter++;
                     switch (item.Anime.Kind)
                     {
                         case "tv":
-                            kind_counter_TV++;
+                            kindCounterTv++;
                             break;
                         case "special":
-                            kind_counter_Special++;
+                            kindCounterSpecial++;
                             break;
                         case "ova":
-                            kind_counter_OVA++;
+                            kindCounterOva++;
                             break;
                         case "ona":
-                            kind_counter_ONA++;
+                            kindCounterOna++;
                             break;
                         case "movie":
-                            kind_counter_Movie++;
+                            kindCounterMovie++;
                             break;
                         case "clip":
-                            kind_counter_Clip++;
+                            kindCounterClip++;
                             break;
                     }
                 }
-                PrintResult(titles_counter, kind_counter_TV, kind_counter_Special, kind_counter_OVA, kind_counter_ONA, kind_counter_Movie, kind_counter_Clip);
+                PrintResult(titlesCounter, kindCounterTv, kindCounterSpecial, kindCounterOva, kindCounterOna, kindCounterMovie, kindCounterClip);
             }
 
-            void InSpecificYear(string? userid, int year, List<AnimeRate> ListAnimeRates)
+            void InSpecificYear(string? userid, int year, List<AnimeRate> listAnimeRates)
             {
-                IEnumerable<AnimeRate> result_InSpecificYear = ListAnimeRates.Where(r => r.CreatedAt?.Year == year);
-                foreach (var item in result_InSpecificYear)
+                var resultInSpecificYear = listAnimeRates.Where(r => r.CreatedAt?.Year == year);
+                foreach (var item in resultInSpecificYear)
                 {
-                    titles_counter++;
+                    titlesCounter++;
                     switch (item.Anime.Kind)
                     {
                         case "tv":
-                            kind_counter_TV++;
+                            kindCounterTv++;
                             break;
                         case "special":
-                            kind_counter_Special++;
+                            kindCounterSpecial++;
                             break;
                         case "ova":
-                            kind_counter_OVA++;
+                            kindCounterOva++;
                             break;
                         case "ona":
-                            kind_counter_ONA++;
+                            kindCounterOna++;
                             break;
                         case "movie":
-                            kind_counter_Movie++;
+                            kindCounterMovie++;
                             break;
                         case "clip":
-                            kind_counter_Clip++;
+                            kindCounterClip++;
                             break;
                     }
                 }
-                PrintResult(titles_counter, kind_counter_TV, kind_counter_Special, kind_counter_OVA, kind_counter_ONA, kind_counter_Movie, kind_counter_Clip, year);
+                PrintResult(titlesCounter, kindCounterTv, kindCounterSpecial, kindCounterOva, kindCounterOna, kindCounterMovie, kindCounterClip, year);
             }
         }
 
-        static void PrintResult(uint titles_counter, uint kind_counter_TV, uint kind_counter_Special, uint kind_counter_OVA, uint kind_counter_ONA, uint kind_counter_Movie, uint kind_counter_Clip)
+        static void PrintResult(uint titlesCounter, uint kindCounterTv, uint kindCounterSpecial, uint kindCounterOva, uint kindCounterOna, uint kindCounterMovie, uint kindCounterClip)
         {
-            if (titles_counter == 0)
+            if (titlesCounter == 0)
             {
                 return;
             }
 
             Console.WriteLine("--- --- --- --- --- --- --- --- ---");
-            Console.WriteLine($"За всё время просмотрено: {titles_counter}");
+            Console.WriteLine($"За всё время просмотрено: {titlesCounter}");
 
-            StringBuilder sb = new StringBuilder("Из них: ");
-            bool first_statement = true;
-            var appender = (string to_append, uint value) =>
+            var sb = new StringBuilder("Из них: ");
+            var firstStatement = true;
+
+            void Appender(string toAppend, uint value)
             {
                 if (value != 0)
                 {
-                    if (first_statement)
+                    if (firstStatement)
                     {
-                        first_statement = false;
+                        firstStatement = false;
                     }
                     else
                     {
                         sb.Append(", ");
                     }
-                    sb.Append(to_append);
+
+                    sb.Append(toAppend);
                     sb.Append(": ");
                     sb.Append(value);
                 }
-            };
+            }
 
-            appender("сериалов", kind_counter_TV);
-            appender("фильмов", kind_counter_Movie);
-            appender("спешелов", kind_counter_Special);
-            appender("OVA", kind_counter_OVA);
-            appender("ONA", kind_counter_ONA);
-            appender("клипов", kind_counter_Clip);
+            Appender("сериалов", kindCounterTv);
+            Appender("фильмов", kindCounterMovie);
+            Appender("спешелов", kindCounterSpecial);
+            Appender("OVA", kindCounterOva);
+            Appender("ONA", kindCounterOna);
+            Appender("клипов", kindCounterClip);
 
             Console.WriteLine(sb);
             Console.WriteLine("--- --- --- --- --- --- --- --- ---");
         }
 
-        static void PrintResult(uint titles_counter, uint kind_counter_TV, uint kind_counter_Special, uint kind_counter_OVA, uint kind_counter_ONA, uint kind_counter_Movie, uint kind_counter_Clip, int year)
+        static void PrintResult(uint titlesCounter, uint kindCounterTv, uint kindCounterSpecial, uint kindCounterOva, uint kindCounterOna, uint kindCounterMovie, uint kindCounterClip, int year)
         {
-            if (titles_counter == 0)
+            if (titlesCounter == 0)
             {
                 return;
             }
 
             Console.WriteLine("--- --- --- --- --- --- --- --- ---");
-            Console.WriteLine($"Просмотрено в {year} году: {titles_counter}");
+            Console.WriteLine($"Просмотрено в {year} году: {titlesCounter}");
 
             StringBuilder sb = new StringBuilder("Из них: ");
-            bool first_statement = true;
-            var appender = (string to_append, uint value) =>
+            bool firstStatement = true;
+            var appender = (string toAppend, uint value) =>
             {
                 if (value != 0)
                 {
-                    if (first_statement)
+                    if (firstStatement)
                     {
-                        first_statement = false;
+                        firstStatement = false;
                     }
                     else
                     {
                         sb.Append(", ");
                     }
-                    sb.Append(to_append);
+                    sb.Append(toAppend);
                     sb.Append(": ");
                     sb.Append(value);
                 }
             };
 
-            appender("сериалов", kind_counter_TV);
-            appender("фильмов", kind_counter_Movie);
-            appender("спешелов", kind_counter_Special);
-            appender("OVA", kind_counter_OVA);
-            appender("ONA", kind_counter_ONA);
-            appender("клипов", kind_counter_Clip);
+            appender("сериалов", kindCounterTv);
+            appender("фильмов", kindCounterMovie);
+            appender("спешелов", kindCounterSpecial);
+            appender("OVA", kindCounterOva);
+            appender("ONA", kindCounterOna);
+            appender("клипов", kindCounterClip);
 
             Console.WriteLine(sb);
             Console.WriteLine("--- --- --- --- --- --- --- --- ---");
