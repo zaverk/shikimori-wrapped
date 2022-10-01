@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using shiki.Models;
 
-namespace shiki
+namespace shiki.Db
 {
-    internal class Response_list
+    internal class AnimeOnDb : MyAnimeID
     {
-        public History[] responses;
+        public DateTime expires_at { get; set; }
     }
 }
