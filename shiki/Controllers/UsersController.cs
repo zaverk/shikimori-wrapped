@@ -13,7 +13,14 @@ namespace shiki.Controllers
 {
     internal class UsersController
     {
-        public static async Task GetAnimeRates()
+        public static async Task<List<AnimeRate>> GetAnimeRates(int year)
+        {
+            var userId = "zaverk";
+            var listAnimeRates = await Di.GetUserCompletedAnimeRates(userId);
+            var result = new List<AnimeRate>();
+            return listAnimeRates.Where(r => r.CreatedAt?.Year == year).ToList();
+        }
+        public static async Task GetAnimeRatesPrint()
         {
             string? varYear = null;
             var year = 0;

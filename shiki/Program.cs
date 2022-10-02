@@ -11,8 +11,8 @@ namespace shiki
     {
         public static async Task Main()
         {
-            await MyMongoDb.GetAnimeById();
-            //await UsersController.GetAnimeRates();
+            await MyMongoDb.Dbtest();
+            //await UsersController.GetAnimeRatesPrint();
             //await HistoryController.Watched();
         }
     }
