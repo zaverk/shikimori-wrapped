@@ -37,26 +37,29 @@ namespace shiki.Db
                 database.GetCollection<MyAnimeID>($"MyCompletedAnimesAnimeIdIn{year}");
 
             var mcsy = await myCompletedAnimesInSpecificYearDb.Find(FilterDefinition<AnimeRate>.Empty).ToListAsync();
-            for (int i = 0; i < mcsy.Count; i++)
-            {
-                try
-                {
-                    Console.WriteLine($"Getting result for {i} page");
-                    var result = await GetAnimeById(mcsy[i].Anime.Id);
-                    await myAnimesAnimeIdInSpecificYearDb.InsertOneAsync(result);
-                }
-                catch(Exception e)
-                {
-                    Console.WriteLine($"Caught exception on {i} page: {e}");
-                    Console.WriteLine("Retrying in 1 second");
-                    Thread.Sleep(1000);
-                    i--;
-                }
-            }
+            // for (int i = 0; i < mcsy.Count; i++)
+            // {
+            //     try
+            //     {
+            //         Console.WriteLine($"Getting result for {i} page");
+            //         var result = await GetAnimeById(mcsy[i].Anime.Id);
+            //         if (myAnimesAnimeIdInSpecificYearDb.Find(id => id.Id == result.Id).CountDocuments() == 0)
+            //         {
+            //             await myAnimesAnimeIdInSpecificYearDb.InsertOneAsync(result);
+            //         }
+            //     }
+            //     catch(Exception e)
+            //     {
+            //         Console.WriteLine($"Caught exception on {i} page: {e}");
+            //         Console.WriteLine("Retrying in 1 second");
+            //         Thread.Sleep(1000);
+            //         i--;
+            //     }
+            // }
 
-            //var mmtest = myAnimesAnimeIdInSpecificYearDb.Find(FilterDefinition<MyAnimeID>.Empty).ToList();
-            //var wastedMinutes = mmtest.Sum(anime => (anime.Episodes * anime.Duration)); //TODO calculate not only completed rates (would be epic)
-            //Console.WriteLine($"In {year} year you waste: {wastedMinutes / 60} hours by watching anime");
+            var mmtest = myAnimesAnimeIdInSpecificYearDb.Find(FilterDefinition<MyAnimeID>.Empty).ToList();
+            var wastedMinutes = mmtest.Sum(anime => (anime.Episodes * anime.Duration)); //TODO calculate not only completed rates (would be epic)
+            Console.WriteLine($"In {year} year you waste: {wastedMinutes} minutes, its a {wastedMinutes / 60} hours and {(wastedMinutes / 60) / 24} days by watching anime");
         }
         
         public static async Task GetAnimes()
