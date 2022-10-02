@@ -53,6 +53,8 @@ namespace shiki
 
             return listAnimeRates;
         }
+        
+        
         public static async Task GetAnimes()
         {
             var listAnimes = new List<Anime>();
@@ -60,6 +62,11 @@ namespace shiki
             var pages = 1;
             var temp = await myClient.Animes.GetAnime(new AnimeRequestSettings { limit = 50, page = pages});
             listAnimes.AddRange(temp);
+        }
+
+        public static async Task GetHistory()
+        {
+            
         }
     }
 }

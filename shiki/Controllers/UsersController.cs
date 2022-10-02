@@ -20,6 +20,14 @@ namespace shiki.Controllers
             var result = new List<AnimeRate>();
             return listAnimeRates.Where(r => r.CreatedAt?.Year == year).ToList();
         }
+        
+        public static async Task<List<AnimeRate>> GetAnimeRates()
+        {
+            var userId = "zaverk";
+            var listAnimeRates = await Di.GetUserCompletedAnimeRates(userId);
+            var result = new List<AnimeRate>();
+            return listAnimeRates.ToList();
+        }
         public static async Task GetAnimeRatesPrint()
         {
             string? varYear = null;
