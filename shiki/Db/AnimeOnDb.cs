@@ -7,7 +7,7 @@ using shiki.Models;
 
 namespace shiki.Db
 {
-    internal class AnimeOnDb : MyAnimeID
+    internal class AnimeOnDb : Anime
     {
         public DateTime expires_at { get; set; }
     }
