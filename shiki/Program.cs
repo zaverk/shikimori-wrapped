@@ -21,7 +21,7 @@ namespace shiki
             //await HistoryController.Watched();
             //await UserServices.GetAnimeRatesPrint();
             //await us.GetAnimeRatesPrint();
-            await db.NewPrintTest(); //TODO fix response issue, catching "try later" or etc sometimes
+            await db.NewPrintTest();
         }
         public static IMongoDatabase MongoClient()
         {

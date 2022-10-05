@@ -59,6 +59,13 @@ public class UserServices
         do
         {
             response = await ShikimoriClient.Users.GetHistory(userId, new HistoryRequestSettings{target_type = "Anime", limit = 100, page = pages});
+            if (response.GetType() != typeof(History[]) && response.Length != 0)
+            {
+                Console.WriteLine("some ex catched, retrying in 1 second");
+                Thread.Sleep(1000);
+                response = await ShikimoriClient.Users.GetHistory(userId, new HistoryRequestSettings{target_type = "Anime", limit = 100, page = pages});
+            }
+
             listAnimeRates.AddRange(response ?? Array.Empty<History>());
             pages++;
         } while (response.Length != 0);
@@ -67,8 +74,8 @@ public class UserServices
     }
     public static async Task<List<long>> GetUserCompletedAnimesIdFromHistory(string username, int year)
     {
-        var HistoryResponse = await GetUserHistory(username);
-        var sortedHistory = HistoryResponse.Where(h => (h.Description.Contains("Просмотрено") 
+        var historyResponse = await GetUserHistory(username);
+        var sortedHistory = historyResponse.Where(h => (h.Description.Contains("Просмотрено") 
                                                        || h.Description.Contains("Просмотрено и оценено")) 
                                                        && h.CreatedAt.Year == year).ToList();
         return sortedHistory.Select(h => h.Target.Id).ToList();

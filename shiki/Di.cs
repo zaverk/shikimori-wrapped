@@ -22,7 +22,7 @@ namespace shiki
         
         public static async Task<List<Anime>> GetAnimes() // trf
         {
-            var listAnimes = new List<Anime>();
+            List<Anime> listAnimes = new List<Anime>();
             var pages = 1;
             var temp = await _shikimoriClient.Animes.GetAnime(new AnimeRequestSettings { limit = 50, page = pages});
             listAnimes.AddRange(temp);

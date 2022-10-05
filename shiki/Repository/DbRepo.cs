@@ -19,6 +19,7 @@ namespace shiki.Repository
     public class DbRepo : IDbRepo
     {
         private static IMongoDatabase? _shikidb = Program.MongoClient();
+
         public async Task NewPrintTest()
         {
             var year = 2022;
@@ -26,10 +27,10 @@ namespace shiki.Repository
             var response = await UserServices.GetUserHistory("zaverk");
             var result = response.Where(h => (h.Description == "Просмотрено" 
                                               || h.Description.Contains("Просмотрено и оценено")) 
-                                              && h.CreatedAt.Year == year).ToList();
+                                             && h.CreatedAt.Year == year).ToList();
             await newDbTest.InsertManyAsync(result);
         }
-        
+
         public async Task Dbtest()
         {
             const int year = 2022;
@@ -51,7 +52,7 @@ namespace shiki.Repository
                     var result = await AnimeController.GetAnimeById(mcsy[i].Id);
                     if (myAnimeIdOverall.Find(id => id.Id == result.Id).CountDocuments() == 0)
                     {
-                       await myAnimeIdOverall.InsertOneAsync(result);
+                        await myAnimeIdOverall.InsertOneAsync(result);
                     }
                 }
                 catch(Exception e)
