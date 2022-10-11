@@ -16,12 +16,17 @@ namespace shiki
         public static async Task Main()
         {
             var db = new DbRepo();
+            var historyDb = new HistoryDb();
             var us = new UserServices();
             //await db.Dbtest();
             //await HistoryController.Watched();
             //await UserServices.GetAnimeRatesPrint();
             //await us.GetAnimeRatesPrint();
-            await db.NewPrintTest();
+            //var temp = await historyDb.GetUserHistoryCompletedList("zaverk"); // 262
+            //await historyDb.GetUserHistory("zaverk");
+            //await db.FullUserHistoryToDb("zaverk");
+            //await db.UserHistoryToDb();
+            await us.PrintHistoriesMatches("zaverk");
         }
         public static IMongoDatabase MongoClient()
         {

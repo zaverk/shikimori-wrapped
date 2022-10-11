@@ -59,7 +59,7 @@ public class UserServices
         do
         {
             response = await ShikimoriClient.Users.GetHistory(userId, new HistoryRequestSettings{target_type = "Anime", limit = 100, page = pages});
-            if (response.GetType() != typeof(History[]) && response.Length != 0)
+            if (response.GetType() != typeof(History[]) && response.Length != 0) // working?
             {
                 Console.WriteLine("some ex catched, retrying in 1 second");
                 Thread.Sleep(1000);
@@ -266,4 +266,25 @@ public class UserServices
             Console.WriteLine(sb);
             Console.WriteLine("--- --- --- --- --- --- --- --- ---");
         }
+
+    public async Task PrintHistoriesMatches(string username)
+    {
+        var count = 0;
+        var userRates = await GetUserRates(username);
+        var userHistory = await GetUserHistory(username);
+        var targetIds = userRates.Select(ur => ur.TargetId).ToList();
+        var result = new List<History>();
+        foreach (var targetId in targetIds)
+        {
+            result.AddRange(userHistory.Where(h => (h.Target.Id == targetId && string.Equals(h.Description, "Просмотрено") || h.Description.StartsWith("Просмотрено и оценено на"))));
+            count++;
+        }
+
+        foreach (var history in result) // 844
+        {
+            Console.WriteLine(history.Target.Russian + "||" + history.Description + "||" + history.CreatedAt);
+        }
+        
+        Console.WriteLine("Всего: " + count);
+    }
 }
