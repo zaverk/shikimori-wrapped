@@ -1,2 +1,0 @@
-1) db logic refactor
-2) ongoing's eps. should be counted too
