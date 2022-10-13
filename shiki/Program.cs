@@ -26,7 +26,7 @@ namespace shiki
             //await historyDb.GetUserHistory("zaverk");
             //await db.FullUserHistoryToDb("zaverk");
             //await db.UserHistoryToDb();
-            await us.PrintHistoriesMatches("zaverk");
+            await us.PrintUserRatesLeftSort("zaverk");
         }
         public static IMongoDatabase MongoClient()
         {

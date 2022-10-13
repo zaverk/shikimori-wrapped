@@ -31,4 +31,11 @@ public class HistoryDb : DbRepo
                                           /*&& h.CreatedAt.Year == year)*/
         await newDbTest.InsertManyAsync(result);
     }
+
+    // public async Task GetHistoryFromUserRates(string username)
+    // {
+    //     var getHistoryFromUserRatesDb = _shikidb.GetCollection<History>("123");
+    //     var input = await UserServices.PrintHistoriesMatches(username);
+    //     await getHistoryFromUserRatesDb.InsertManyAsync(input);
+    // }
 }

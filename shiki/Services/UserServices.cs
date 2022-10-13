@@ -1,4 +1,5 @@
 using System.Text;
+using System.Xml.Linq;
 using ShikimoriSharp;
 using ShikimoriSharp.Classes;
 using ShikimoriSharp.Enums;
@@ -267,24 +268,20 @@ public class UserServices
             Console.WriteLine("--- --- --- --- --- --- --- --- ---");
         }
 
-    public async Task PrintHistoriesMatches(string username)
+    public async Task PrintUserRatesLeftSort(string username)
     {
         var count = 0;
-        var userRates = await GetUserRates(username);
+        var userRates = await GetUserRates(username, MyList.completed);
         var userHistory = await GetUserHistory(username);
-        var targetIds = userRates.Select(ur => ur.TargetId).ToList();
-        var result = new List<History>();
-        foreach (var targetId in targetIds)
-        {
-            result.AddRange(userHistory.Where(h => (h.Target.Id == targetId && string.Equals(h.Description, "Просмотрено") || h.Description.StartsWith("Просмотрено и оценено на"))));
-            count++;
-        }
+        var sortedUserHistory = userHistory.Where(h =>
+            (string.Equals(h.Description, "Просмотрено") || h.Description.Contains("Просмотрено и оценено"))).ToList();
 
-        foreach (var history in result) // 844
+
+        foreach (var rate in userRates)
         {
-            Console.WriteLine(history.Target.Russian + "||" + history.Description + "||" + history.CreatedAt);
+            var temp = userRates.Single(ur => Equals(userRates.Select(us => us.TargetId), sortedUserHistory.Select(h => h.Target.Id)));
+            userRates.Remove(temp);
         }
-        
-        Console.WriteLine("Всего: " + count);
+        Console.WriteLine(userRates.Count);
     }
 }
